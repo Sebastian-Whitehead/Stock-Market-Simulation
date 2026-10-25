@@ -24,7 +24,7 @@ public class StockListingConfiguration {
 
     @PostConstruct
     public void saveStocksToDatabaseOnStartup() {
-        if (stockCSVReader.lineCount() != stockService.findStockRowCount()) {
+        if (stockService.findStockRowCount() == 0) {
             logger.info("Saving Default Stocks");
             stockService.saveDefaultStockToDatabase(stockCSVReader.toEntities());
         }

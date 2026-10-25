@@ -26,7 +26,7 @@ public class Stock extends BaseEntity {
     @OneToOne(mappedBy = "stock", cascade = CascadeType.ALL, orphanRemoval = true)
     private PricingModel pricingModel;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<NewsRelease> newsReleases = new ArrayList<>();
 
     @OneToMany(mappedBy = "stock", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

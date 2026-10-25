@@ -5,6 +5,7 @@ import org.api.stockmarket.core.utils.Capitalize;
 import org.api.stockmarket.modules.stocks.dto.PriceRecordDTO;
 import org.api.stockmarket.modules.stocks.dto.StockBasicDTO;
 import org.api.stockmarket.modules.stocks.dto.StockDTOMapper;
+import org.api.stockmarket.modules.stocks.dto.StockWriteRequest;
 import org.api.stockmarket.modules.stocks.entity.Stock;
 import org.api.stockmarket.modules.stocks.enums.MarketCap;
 import org.api.stockmarket.modules.stocks.enums.StockViewType;
@@ -15,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/api/v1/stocks")
@@ -38,6 +39,33 @@ public class StockController {
     @GetMapping
     public List<StockBasicDTO> getAllStockData() {
         return StockDTOMapper.map(stockService.getAllStocks(), StockViewType.BASIC);
+    }
+
+    @GetMapping(value = "/by-ticker")
+    public List<StockBasicDTO> getStocksByTicker(@RequestParam List<String> tickers) {
+        return StockDTOMapper.map(stockService.getStocksByTickerSymbols(tickers), StockViewType.BASIC);
+    }
+
+    @PostMapping(value = "/{ticker}")
+    public ResponseEntity<StockBasicDTO> createStock(
+            @PathVariable String ticker,
+            @RequestBody StockWriteRequest request) {
+        Stock stock = stockService.createStock(ticker, request);
+        return ResponseEntity.created(URI.create("/api/v1/stocks/" + stock.getTicker()))
+                .body(new StockBasicDTO(stock));
+    }
+
+    @PutMapping(value = "/{ticker}")
+    public ResponseEntity<StockBasicDTO> updateStock(
+            @PathVariable String ticker,
+            @RequestBody StockWriteRequest request) {
+        return ResponseEntity.ok(new StockBasicDTO(stockService.updateStock(ticker, request)));
+    }
+
+    @DeleteMapping(value = "/{ticker}")
+    public ResponseEntity<Void> deleteStock(@PathVariable String ticker) {
+        stockService.deleteStock(ticker);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/marketCap/{marketCap}")

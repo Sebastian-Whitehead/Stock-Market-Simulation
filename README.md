@@ -225,6 +225,7 @@ To run locally, first ensure that Docker Desktop & Maven is downloaded to your s
 *NOTE* API Docs can be found after running by visiting http://localhost:8000/swagger-ui/index.html
 
 - Stock Market Service will run on http://localhost:8000
+- Stock management endpoints for creating, updating, deleting, and looking up stocks are documented in the [service README](stock-market-service/README.md#stock-management-api).
 
 ```
   - git clone https://github.com/Jackson-Wozniak/Stock-Market-Simulation.git
@@ -239,4 +240,3 @@ To run locally, first ensure that Docker Desktop & Maven is downloaded to your s
 
 <br/>
 <!-- ------------------------------------------------------------------------------------------------------------------------------------------->
-
